@@ -1,13 +1,34 @@
 # coding:utf-8
 import random
+import __main__
 import maya.cmds as cmds
 import maya.mel as mel
 
 '''
+
+TETRIS-Maya
+------------
+* Maya上でテトリスをするデモです。
+
+使い方
+------------
+* MayaへこのFileをDrop！
+* GameStartボタンで開始！
+* RecDur(f)で指定した時間だけプレイを記録
+* Replay(Bake)でプレイ内容をアニメーションにベイク
+
+
+Author 
+------------
+https://github.com/nakayama500
+
+
 TODO
+------------
 - 回転時の押し出し
 - 回転の中心点を調整
 - スコア表示
+
 '''
 
 #---------------- Main --------------------
@@ -136,11 +157,17 @@ class Tetris(Singleton):
 			cmds.group(em=1,n='b_right',parent='b_up')
 	
 		#expression
+		exp = \
+'''
+neutral.translateX=0;
+string $sels[]=`ls -sl`;
+python (\"tobj.update('\"+$sels[0]+\"')\");
+select -r neutral;
+'''
 		if not cmds.objExists('input_exp'):
 			cmds.expression(
 				n =	'input_exp',
-				s =	"neutral.translateX=0;\nstring $sels[]=`ls -sl`;\n"+
-					"python (\"t.tetObj.update('\"+$sels[0]+\"')\");\nselect -r neutral;",
+				s =	exp,
 				o =	'right',ae=1,uc='all'
 			)
 		
@@ -302,15 +329,14 @@ class Tetris(Singleton):
 
 #----------------- UI -------------------
 
-tetObj = None
 
 def show():
-	global tetObj
 	tetObj = Tetris()
 	cmds.window('tetris_win',w=400,title='Tetris Demo')
 	cmds.columnLayout(adj=1)
 	cmds.intFieldGrp('rec_IF',l=u'Rec Dur(f)',v1=1000)
 	cmds.floatFieldGrp('speed_FF',l=u'Speed',v1=1)
+	cmds.button('funcHolder',vis=0,c=lambda:tetObj)
 	cmds.button(
 		u'Reset',
 		w=70,h=24,
@@ -331,3 +357,8 @@ def show():
 		c=lambda a:tetObj.bakeReplay()
 	)
 	cmds.window('tetris_win', edit=True, vis=True)
+
+if __name__!='__main__':
+	def onMayaDroppedPythonFile(*args, **kwargs):
+		show()
+		cmds.evalDeferred('tobj=cmds.button("funcHolder",q=1,c=1)()')
