@@ -1,14 +1,11 @@
-# TETRIS-Maya
-Tetris script for Maya  
-
-[![](https://i.vimeocdn.com/video/896471122_800x600.jpg)](https://vimeo.com/420966353)  
-https://vimeo.com/420966353
-
-## Requirement
-- Autodesk Maya2018+ (win10)
+# Tetris script for Maya  
 
 ## Usage
 ![](usage1.gif)
+https://vimeo.com/420966353
+
+## Requirement
+- Autodesk Maya2018+
 
 ## Features
 - Mayaの標準機能のみで動いています
@@ -21,5 +18,8 @@ https://vimeo.com/420966353
 ## License
 This project is released under the [WTFPL](http://www.wtfpl.net) LICENSE.
 
+---
+
 ## Author
+Nakayama500(ZZZ.llc)
 https://github.com/nakayama500
